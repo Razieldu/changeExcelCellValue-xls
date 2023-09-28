@@ -64,6 +64,6 @@ pyautogui.press('enter')
 save_path = "C:\\Users\\jeremydu\\Desktop\\"
 pyautogui.write(save_path)
 pyautogui.press('enter')
+# pyautogui.press('q')
 pyautogui.hotkey('win', 'd')
 print("文本已保存到记事本中。")
-# pyautogui.press('q')

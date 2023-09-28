@@ -1,56 +1,63 @@
-import pyautogui
-import cv2
+# import cv2
+# import numpy as np
+# import os
+# import pyautogui
+
+# output = "video.avi"
+# img = pyautogui.screenshot()
+# img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+# #get info from img
+# height, width, channels = img.shape
+# # Define the codec and create VideoWriter object
+# fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+# out = cv2.VideoWriter(output, fourcc, 20.0, (width, height))
+
+# while(True):
+#  try:
+#   img = pyautogui.screenshot()
+#   image = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+#   out.write(image)
+#   StopIteration(0.5)
+#  except KeyboardInterrupt:
+#   break
+
+# out.release()
+# cv2.destroyAllWindows()
+
+
 import numpy as np
- 
-# Specify resolution
-resolution = (1920, 1080)
- 
-# Specify video codec
-codec = cv2.VideoWriter_fourcc(*"XVID")
- 
-# Specify name of Output file
-filename = "Recording.avi"
- 
-# Specify frames rate. We can choose any
-# value and experiment with it
-fps = 60.0
- 
- 
-# Creating a VideoWriter object
-out = cv2.VideoWriter(filename, codec, fps, resolution)
- 
-# Create an Empty window
-cv2.namedWindow("Live", cv2.WINDOW_NORMAL)
- 
-# Resize this window
-cv2.resizeWindow("Live", 480, 270)
- 
+import cv2
+from mss import mss
+
+# 设置捕获区域的坐标和大小
+bounding_box = {'top': 100, 'left': 0, 'width': 400, 'height': 300}
+
+# 创建MSS（Python屏幕捕获库）对象
+sct = mss()
+
+# 视频写入设置
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('screen_capture.avi', fourcc, 20.0, (400, 300))
+
 while True:
-    # Take screenshot using PyAutoGUI
-    img = pyautogui.screenshot()
- 
-    # Convert the screenshot to a numpy array
-    frame = np.array(img)
- 
-    # Convert it from BGR(Blue, Green, Red) to
-    # RGB(Red, Green, Blue)
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
- 
-    # Write it to the output file
+    # 捕获屏幕区域
+    sct_img = sct.grab(bounding_box)
+    
+    # 将捕获的图像转换为OpenCV格式
+    frame = np.array(sct_img)
+    
+    # 写入视频文件
     out.write(frame)
-     
-    # Optional: Display the recording screen
-    cv2.imshow('Live', frame)
-     
-    # Stop recording when we press 'q'
-    if cv2.waitKey(1) == ord('q'):
+
+    # 显示屏幕捕获画面（可选）
+    cv2.imshow('Screen Capture', frame)
+
+    # 检测键盘输入，如果按下 'q' 键则退出循环
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
- 
-# Release the Video writer
+
+# 释放VideoWriter对象
 out.release()
- 
-# Destroy all windows
+
+# 关闭OpenCV窗口
 cv2.destroyAllWindows()
-
-
-
