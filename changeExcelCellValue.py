@@ -14,7 +14,7 @@ sheet = workbook.Sheets("UserData")
 # value = sheet.Cells(1, 1).Value
 accountAndPassword = input("輸入以作為帳號及密碼__ ")
 name = input("輸入姓名__")
-ifdelete= input("是否執行刪除")
+ifdelete= input("是否執行刪除")###初次貼上時請輸入1以外的數值
 
 
 sheet.Cells(2, 1).Value = accountAndPassword
